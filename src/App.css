@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+body {
+  background-image: url("/ChatGPT\ Image\ Apr\ 14\,\ 2025\,\ 10_56_51\ AM.png");
+  background-size: cover; /* Makes sure it covers the whole screen */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents tiling */
+  height: 100vh; /* Ensures full screen height */
+  margin: 0; /* Removes default spacing */
+}
+
+.map {
+  height: 600px;
+  width: 600px;
+  background-color: beige;
+}
+
+/* HTML: <div class="triangle"></div> */
+.safezone-blue {
+  height: 60px;
+  aspect-ratio: 2;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.safezone-green {
+  height: 60px;
+  aspect-ratio: 2;
+  clip-path: polygon(50% 100%, 100% 0, 0 0);
+}
+
+.safezone-red {
+  height: 120px;
+  width: 60px;
+  aspect-ratio: 2;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.safezone-yellow {
+  height: 120px;
+  width: 60px;
+  clip-path: polygon(100% 0,0 50%,100% 100%);
+  aspect-ratio: 2;
+}
+
+/* HTML: <div class="triangle"></div> */
+.goti-lower {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 11px 37px 11px;
+  border-color: transparent transparent gray transparent;
+  transform: rotate(180deg);
+}
+
+.numberonthedice{
+  
+}
