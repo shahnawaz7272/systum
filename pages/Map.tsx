@@ -1,8 +1,16 @@
 import House from "../src/components/mapcomps/House"
 import Path from "../src/components/mapcomps/Path"
 import Safezone from "../src/components/mapcomps/Safezone"
+import { GameState } from "../src/store/store"
+import { useEffect } from "react"
 
 const Map = () => {
+  const init = GameState((s)=>s.initializeTokens)
+
+  useEffect(() => {
+    init()
+  }, [])
+  
   return (
    <section> 
     <div className="ludo-map-container flex justify-center items-center pt-[60px]">

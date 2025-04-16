@@ -1,52 +1,68 @@
 import { useState } from "react";
+import { GameState } from "../../store/store";
+// import { tokenState } from "../../store/store";
 
-const Dice = () => {
-  // State to store the dice number (1 to 6)
-  const [nod, setnod] = useState(1);
+type color = {
+  colors: string;
+};
 
-  // State to control animation during dice roll
+const Dice = ({ colors }: color) => {
+  const Turn = GameState((state) => state.Turn);
+  const rollDice = GameState((state) => state.rollDice);
+  const NumberOnDice = GameState((state) => state.NumberOnDice);
+  const nextTurn = GameState((state) => state.nextTurn);
+  const sethasrolled = GameState((state) => state.sethasRolled);
+  const hasrolled = GameState((state) => state.hasrolled);
+  // const color = tokenState((state) => state.color);
+  // const setColor = tokenState((state) => state.setColor);
+
   const [isRolling, setIsRolling] = useState(false);
 
-  // Function to handle dice roll
+  // ⛔ Early return must come AFTER all hooks
+  if (Turn !== colors) return null;
+
   const diceroll = () => {
     console.log("click");
+    if (hasrolled) return;
+    else {
+      setIsRolling(true);
+      rollDice();
+      let steps = rollDice();
+      console.log("new dice value:", steps);
 
-    // Trigger animation
-    setIsRolling(true);
-
-    // Generate random dice number between 1 and 6
-    let randomvalue = Math.floor(Math.random() * 6 + 1);
-    setnod(randomvalue);
-    console.log("new dice value:", randomvalue);
-
-    // Stop animation after 300ms
-    setTimeout(() => {
-      setIsRolling(false);
-    }, 300);
+      if (steps == 6) {
+        console.log("inside 6s");
+        sethasrolled();
+        setTimeout(() => {
+          setIsRolling(false);
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          setIsRolling(false);
+          nextTurn();
+        }, 1000);
+      }
+    }
   };
-
-  // Create an array equal to number of dots to render
-  const dicerollarr = Array(nod).fill(null);
+  const delayingnum = NumberOnDice;
+  const dicerollarr = Array(delayingnum).fill(null);
 
   return (
-    // Dice box container
     <div
       className={`bg-white h-[75px] w-[75px] rounded-[8px] shadow-md 
-      flex justify-center items-center flex-wrap cursor-pointer 
-      transition-transform duration-300 
-      ${isRolling ? "rotate-[20deg] scale-110" : ""}`}
+        flex justify-center items-center flex-wrap cursor-pointer 
+        transition-transform duration-300 
+        ${isRolling ? "rotate-[20deg] scale-110" : ""}`}
       onClick={diceroll}
     >
-      {/* Render dice dots */}
       {dicerollarr.map((_, index) => {
-        // Special layout only for dice value 5
-        if (nod === 5) {
+        if (NumberOnDice === 5) {
           const fiveDotStyles = [
-            "justify-start items-start",     // top-left
-            "justify-end items-start",       // top-right
-            "justify-center items-center w-[46px]",   // center
-            "justify-start items-end",       // bottom-left
-            "justify-end items-end",         // bottom-right
+            "justify-start items-start", // top-left
+            "justify-end items-start", // top-right
+            "justify-center items-center w-[46px]", // center
+            "justify-start items-end", // bottom-left
+            "justify-end items-end", // bottom-right
           ];
 
           return (
@@ -59,7 +75,6 @@ const Dice = () => {
           );
         }
 
-        // Default layout for all other numbers
         return (
           <div
             key={index}
