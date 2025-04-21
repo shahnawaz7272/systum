@@ -1,60 +1,88 @@
 import { GameState } from "../../store/store";
 
-// Type for the props: expects a Tailwind color class like 'bg-red-400'
-type color = {
-  color: string;
-  spiningAni: string;
-  tokenId:number;
+// Props type definition for Token component
+type TokenProps = {
+  color?: string;          // Tailwind color class (e.g., 'bg-red-400')
+  spiningAni?: string;     // Indicates which player's turn it is (used for animation)
+  tokenId?: number;        // Unique identifier for the token
 };
 
-const Token = ({ color, spiningAni ,tokenId }: color) => {
+const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
+  // Zustand store selectors
   const Turn = GameState((state) => state.Turn);
-  let shouldSpin = spiningAni == Turn;
   const nextTurn = GameState((state) => state.nextTurn);
-  const sethasrolled = GameState((state) => state.sethasRolled);
+  const setHasRolled = GameState((state) => state.sethasRolled);
   const NumberOnDice = GameState((state) => state.NumberOnDice);
-  const hasrolled = GameState((state) => state.hasrolled);
+  const hasRolled = GameState((state) => state.hasrolled);
   const tokens = GameState((state) => state.Tokens);
-  const token=tokens.find((t)=>(t.id==tokenId&&t.color==spiningAni))
-  const moveOutfromHome = GameState((state) => state.moveOutFromHome);
-  let tokePosition=token?.position
+  const moveOutFromHome = GameState((state) => state.moveOutFromHome);
+  const moveToken =GameState((state)=>state.moveToken)
 
+  // Find the token based on its ID and color
+  const token = tokens.find(
+    (t) => t.id === tokenId && t.color === color
+  );
+
+  const tokenPosition = token?.position;
+  const shouldSpin = spiningAni === Turn;
+
+  // Handle token click
   const tokenHandler = () => {
-    console.log(hasrolled)
-    console.log(tokens)
-    console.log(token)
-    console.log(Turn)
-    console.log(color)
-    if (hasrolled == true) {
-      if (token?.position === "home" && Turn === spiningAni && NumberOnDice === 6) {
-        console.log("goti chali");
-        console.log(token)
-        moveOutfromHome(tokenId,spiningAni)
-        sethasrolled();
-      } else {
-        console.log("bhaga")
-        nextTurn();
-        sethasrolled();
+    if (token?.color==color && Turn==color) {
+      console.log({ hasRolled, token, Turn, color });
+
+      if (hasRolled) {
+        // If token is at home, it's the current player's turn, and dice shows 6
+        if (token?.position === "home" && Turn === color && NumberOnDice === 6) {
+          console.log("Token moved out of home");
+          moveOutFromHome(tokenId, spiningAni);
+          setHasRolled();
+        console.log(hasRolled ,"40 tt")
+        } 
+        else if(Turn===color && token?.isOutofHome===true){
+            console.log("moving")
+            moveToken(tokenId,color)
+          setHasRolled();
+        console.log(hasRolled ,"46 tt")
+  
+        }
+        else {
+          console.log("Not allowed to move, passing turn");
+          setHasRolled();
+        console.log(hasRolled ,"52 tt")
+
+        }
       }
+    } else {
+      console.log("bas kar gandu")
     }
+  
   };
 
   return (
-    <div className={`token-container relative ${tokePosition=="start"?"top-[73px]":"-top-[30px]"} ${tokePosition=="start"?"left-[110px]":"left-2"} h-[62px] w-[26px]`} onClick={tokenHandler}>
-      {/* Main token wrapper */}
+    <div
+      onClick={tokenHandler}
+      className={`token-container ${tokenPosition=="home"?"relative":"absolute"} 
+        ${tokenPosition === "start" ? "top-[73px] left-[110px]" : "-top-[30px] left-2"} 
+        h-[62px] w-[26px]`}
+    >
+      {/* Token body */}
       <div className="token relative z-10">
-        {/* Outer gray part of the token */}
+        {/* Outer gray ring of the token */}
         <div className="bg-[gray] h-[25px] w-[23px] rounded-4xl flex justify-center items-center">
-          {/* Inner colored part - changes based on player color */}
-          <div className={`h-[18px] w-[18px] rounded-4xl ${color} z-[1]`}></div>
+          {/* Inner colored circle */}
+          <div className={`h-[18px] w-[18px] rounded-4xl bg-${color}-400 z-[1]`}></div>
         </div>
 
-        {/* Lower shadow/3D effect of token */}
-        <div className="goti-lower absolute top-[17px] "></div>
+        {/* Lower 3D base of the token */}
+        <div className="goti-lower absolute top-[17px]"></div>
       </div>
 
-      {/* Circle effect behind goti (glow or border) */}
-      <div className={`circle h-6 w-6 border-black border-[0.5px] rounded-4xl absolute top-[38px] ${shouldSpin ? "animate-ping" : ""}`}></div>
+      {/* Animated glowing circle (shown only when it's the player's turn) */}
+      <div
+        className={`circle h-6 w-6 border-black border-[0.5px] rounded-4xl absolute top-[38px] 
+        ${shouldSpin ? "animate-ping" : ""}`}
+      ></div>
     </div>
   );
 };

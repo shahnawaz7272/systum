@@ -1,72 +1,91 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-// Define prop types: cell index & color info for the path
-type celltype = {
-  celltype: number; // index of the cell in the path
-  coloredsteps: string; // color class like 'bg-blue-400' to decide special path
+import { GameState } from "../../../store/store";
+import Token from "../Token";
+
+// Props type for the Pathcell component
+type CellType = {
+  celltype: number; // Cell index within the path array
+  coloredsteps: string; // Tailwind color class to indicate player path (e.g., 'bg-blue-400')
+  specialid: string; // Unique identifier used to match token positions
 };
 
-const Pathcell = ({ celltype, coloredsteps }: celltype) => {
+const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
+  const tokens = GameState((s) => s.Tokens);
+  const tokenTobeRendered = tokens.filter((t) => t.position === specialid);
+
+  // Path visuals config based on color
   let colored: number[] = [];
-  let stared: number[] = [];
+  let starred: number[] = [];
   let arrowed: number[] = [];
-  let starcolour: string;
-  let rotation:number
+  let starColor: string = "";
+  let arrowRotation: number = 0;
 
-  // Assign special highlighted steps based on the player color
+  // Set path styling rules based on player's color path
   switch (coloredsteps) {
-    case "bg-blue-400":
+    case "blue":
       colored = [1, 4, 7, 10, 12, 13];
-      stared = [11];
-      starcolour = "#60a5fa";
+      starred = [11];
       arrowed = [16];
-      rotation=270
+      starColor = "#60a5fa";
+      arrowRotation = 270;
       break;
 
-    case "bg-yellow-400":
+    case "yellow":
       colored = [1, 4, 7, 10, 12, 13];
-      stared = [11];
-      starcolour = "#facc15";
+      starred = [11];
       arrowed = [16];
-      rotation=180
+      starColor = "#facc15";
+      arrowRotation = 180;
       break;
 
-    case "bg-red-400":
+    case "red":
       colored = [4, 5, 7, 10, 13, 16];
-      stared = [6];
-      starcolour = "#f87171";
+      starred = [6];
       arrowed = [1];
-      rotation=0
+      starColor = "#f87171";
+      arrowRotation = 0;
       break;
 
-    case "bg-green-400":
+    case "green":
       colored = [4, 5, 7, 10, 13, 16];
-      stared = [6];
-      starcolour = "#34d399";
+      starred = [6];
       arrowed = [1];
-      rotation=90
+      starColor = "#34d399";
+      arrowRotation = 90;
       break;
 
     default:
       break;
   }
 
-  // Check if current cell index is a highlighted one
-  const shouldBeColored = colored.includes(celltype);
-
-  const shouldBestared = stared.includes(celltype);
-
-  const shouldarrowed = arrowed.includes(celltype);
+  // Flags to decide what this cell should show
+  const isColoredCell = colored.includes(celltype);
+  const isStarCell = starred.includes(celltype);
+  const isArrowCell = arrowed.includes(celltype);
 
   return (
     <div className="path-cell-container h-10 w-10">
-      {/* If cell is in the colored list, apply color */}
-      <div className={`path-cell h-10 w-10 border-b-blue-950 border border-r-0 ${shouldBeColored ? coloredsteps : ""} flex justify-center items-center`}>
-        {shouldBestared ? <FontAwesomeIcon icon={faStarRegular} style={{ color: `${starcolour}` }} size="xl"></FontAwesomeIcon> : ""}
-        {shouldarrowed ? <FontAwesomeIcon icon={faArrowRight} style={{ color: `${starcolour}` }} size="xl" rotation={`${rotation}`}></FontAwesomeIcon> : ""}
+      <div
+        className={`path-cell h-10 w-10 border-b-blue-950 border border-r-0 
+        ${isColoredCell ? `bg-${coloredsteps}-400` : ""} 
+        flex justify-center items-center relative`}
+      >
+        {/* Show star icon on special cells */}
+        {isStarCell && <FontAwesomeIcon icon={faStarRegular} style={{ color: starColor }} size="xl" />}
 
-        {/* <FontAwesomeIcon icon={faStarRegular} style={{ color: "#FFD43B" }} size='xl'></FontAwesomeIcon>   */}
+        {/* Show arrow icon on directional cells */}
+        {isArrowCell && <FontAwesomeIcon icon={faArrowRight} style={{ color: starColor }} size="xl" rotation={arrowRotation} />}
+
+        {/* Render token if one is positioned here */}
+        {tokenTobeRendered.map((item) => (
+          <Token key={item.id} color={item.color} spiningAni={item.color} tokenId={item.id} />
+        ))}
+        
+        {/* {specialid} */}
+        {/* Optional: show special ID for debugging */}
+        {/* <div className="absolute bottom-0 right-0 text-[10px]">{specialid}</div> */}
       </div>
     </div>
   );

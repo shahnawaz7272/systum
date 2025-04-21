@@ -23,24 +23,31 @@ const Dice = ({ colors }: color) => {
 
   const diceroll = () => {
     console.log("click");
-    if (hasrolled) return;
+    if (hasrolled) {
+      console.log("tru ho gya")
+       
+    }
     else {
       setIsRolling(true);
-      rollDice();
       let steps = rollDice();
       console.log("new dice value:", steps);
 
       if (steps == 6) {
         console.log("inside 6s");
         sethasrolled();
+        console.log(hasrolled ,35)
         setTimeout(() => {
           setIsRolling(false);
         }, 1000);
       } else {
+        sethasrolled();
+        console.log(hasrolled ,41)
         setTimeout(() => {
           setIsRolling(false);
-          nextTurn();
         }, 1000);
+        setTimeout(() => {
+          nextTurn();
+        }, 5000);
       }
     }
   };
