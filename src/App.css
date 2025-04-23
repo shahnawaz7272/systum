@@ -52,6 +52,6 @@ body {
   transform: rotate(180deg);
 }
 
-.numberonthedice{
-  
-}
+/* Make tokens smaller inside safe zones and fix overlap issues */
+
+/* Prevent token from getting hidden behind Pathcells */

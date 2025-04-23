@@ -1,4 +1,4 @@
-import House from "../src/components/mapcomps/House"
+import Home from "../src/components/mapcomps/Home"
 import Path from "../src/components/mapcomps/Path"
 import Safezone from "../src/components/mapcomps/Safezone"
 import { GameState } from "../src/store/store"
@@ -16,9 +16,9 @@ const Map = () => {
     <div className="ludo-map-container flex justify-center items-center pt-[60px]">
         <div className="map">
            <div className="upper h-[240px] w-[600px] flex"> 
-            <House color="red"/>
+            <Home color="red"/>
             <Path ori="vertical" color="green"/>
-            <House color="green"/>
+            <Home color="green"/>
             </div>
             <div className="middle h-[120px] w-[600px] flex flex-wrap">
             <Path ori="horizontal" color="red"/>
@@ -26,9 +26,9 @@ const Map = () => {
             <Path ori="horizontal" color="yellow"/>
             </div>
             <div className="upper h-[240px] w-[600px] flex"> 
-            <House color="blue"/>
+            <Home color="blue"/>
             <Path ori="vertical" color="blue"/>
-            <House color="yellow"/>
+            <Home color="yellow"/>
             </div>
         </div>
     </div>
