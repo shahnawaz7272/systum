@@ -36,6 +36,7 @@ type GameStore = {
   initializeTokens: () => void;
   moveOutFromHome: (id: number, color: TokenState["color"]) => void;
   moveToken:(id:number,color:TokenState["color"])=>void;
+  sendTokenHome:(id:number,color:TokenState["color"])=>void;
 
 };
 
@@ -53,10 +54,14 @@ export const GameState = create<GameStore>((set, get) => ({
 
   TokenRoute:{
     blue:["b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b13","b10","b7","b4","b1"],
+    // "b9","b6","b3","b0","r15","r12",
     red:["r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r4","r7","r10","r13","r16"],
+    // "r8","r11","r14","r17","g15","g12"
     green:["g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g4","g7","g10","g13","g16"],
+    // "g8","g11","g14","g17","y2","y5"
     yellow:["y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y13","y10","y7","y4","y1"],
   },
+  // "y9","y6","y3","y0","b2","b5","b8"
  
    // 🟢 Called once on app start: initialize 4 tokens per color
    initializeTokens: () =>{
@@ -98,7 +103,7 @@ export const GameState = create<GameStore>((set, get) => ({
 
     const next = order[(order.indexOf(currentTurn) + 1) % order.length];
     // ✅ Correct logic: safely cycles through the player order
-
+    
     set({ Turn: next ,hasrolled:false});
   },
 
@@ -130,6 +135,17 @@ export const GameState = create<GameStore>((set, get) => ({
     set({ Tokens: updatedTokens });
   },
   
+  sendTokenHome:(id:number,color:string)=>{
+    const {Tokens}=get();
+    const updatedTokens=Tokens.map((t)=>{
+      if (t.color==color && t.id==id) {
+        return { ...t, position: `home` , isOutofHome:false};
+      }
+      return t
+    })
+    set({ Tokens:  updatedTokens });
+    
+  },
 
   moveOutFromHome: (id:number, color:string) => {
     const { Tokens, NumberOnDice, Turn } = get();
@@ -141,7 +157,7 @@ export const GameState = create<GameStore>((set, get) => ({
         NumberOnDice === 6 &&
         Turn === color
       ) {
-        return { ...token, position: `start${Turn}` , isOutofHome:true}; // Move to starting path
+        return { ...token, position: `start${Turn}` , isOutofHome:true , stepsMoved:0}; // Move to starting path
       }
       return token;
     });

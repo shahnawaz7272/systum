@@ -13,7 +13,24 @@ type CellType = {
 
 const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
   const tokens = GameState((s) => s.Tokens);
-  const tokenTobeRendered = tokens.filter((t) => t.position === specialid);
+  const Turn = GameState((s) => s.Turn);
+  const tokensHere=tokens.filter((t) => t.position === specialid)
+  const sendTokenHome = GameState((s) => s.sendTokenHome);
+
+  const tokenRenderHandler = () => {
+    return tokens
+      .filter((t) => t.position === specialid)
+      .map((t,index) => {
+        if (t.color !== Turn && index==0) {
+          sendTokenHome(t.id, t.color);
+          return null; // Don't render opponent token; it’s sent home
+        }
+        return t; // Return only current player's token for rendering
+      })
+      .filter(Boolean); // Remove null values
+  };
+  
+  const tokensTobeRendered=tokensHere.length<2?tokensHere:tokenRenderHandler()
 
   // Path visuals config based on color
   let colored: number[] = [];
@@ -79,10 +96,10 @@ const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
         {isArrowCell && <FontAwesomeIcon icon={faArrowRight} style={{ color: starColor }} size="xl" rotation={arrowRotation} />}
 
         {/* Render token if one is positioned here */}
-        {tokenTobeRendered.map((item) => (
-          <Token key={item.id} color={item.color} spiningAni={item.color} tokenId={item.id} />
+        {tokensTobeRendered.map((item) => (
+          <Token key={item?.id} color={item?.color} spiningAni={item?.color} tokenId={item?.id} />
         ))}
-        
+
         {/* {specialid} */}
         {/* Optional: show special ID for debugging */}
         {/* <div className="absolute bottom-0 right-0 text-[10px]">{specialid}</div> */}

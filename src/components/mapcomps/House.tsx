@@ -36,7 +36,7 @@ const House = ({ color }: color) => {
       <div
         className={`bg-red-200 h-[120px] w-[120px] absolute ${diceboardposition} flex justify-center items-center`}
       >
-        <Dice colors={color}/>
+        <Dice color={color}/>
       </div>
 
       {/* Main square (house) with player color */}
