@@ -20,7 +20,7 @@ const Path = ({ ori, color }: orientation) => {
 
   switch (color) {
     case "blue":
-      cellIdArr = ["blue0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "starblue", "startblue", "b13", "b14", "b15", "arrowblue", "b17"];
+      cellIdArr = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "starblue", "startblue", "b13", "b14", "b15", "arrowblue", "b17"];
 
       break;
     case "red":
