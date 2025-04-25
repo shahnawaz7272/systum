@@ -9,9 +9,9 @@ const Path = ({ ori, color }: orientation) => {
   const pathCells = Array(18).fill(null);
 
   const isVertical = ori === "vertical";
-  const heightClass = isVertical ? "h-[240px]" : "h-[120px]";
-  const widthClass = isVertical ? "w-[120px]" : "w-[240px]";
-  const directionClass = !isVertical ? "flex-col-reverse" : "";
+  const heightClass = isVertical ? "path-vertical-height" : "path-horizontal-height";
+  const widthClass = isVertical ? "path-vertical-width" : "path-horizontal-width";
+  const directionClass = !isVertical ? "path-horizontal-direction" : "";
 
   let cellIdArr: string[] = [];
 
@@ -32,7 +32,7 @@ const Path = ({ ori, color }: orientation) => {
 
   return (
     <div className="path-container">
-      <div className={`path ${heightClass} ${widthClass} flex flex-wrap ${directionClass}`}>
+      <div className={`path-base ${heightClass} ${widthClass} ${directionClass}`}>
         {pathCells.map((_, index) => (
           <Pathcell key={index} celltype={index} coloredsteps={color} specialid={cellIdArr[index]} />
         ))}

@@ -14,32 +14,30 @@ const Home = ({ color }: color) => {
 
   switch (color) {
     case "red":
-      diceboardposition = "-left-[120px]";
+      diceboardposition = "dice-red";
       break;
     case "yellow":
-      diceboardposition = "-right-[120px] top-[120px]";
+      diceboardposition = "dice-yellow";
       break;
     case "green":
-      diceboardposition = "-right-[120px]";
+      diceboardposition = "dice-green";
       break;
     case "blue":
-      diceboardposition = "-left-[120px] top-[120px]";
+      diceboardposition = "dice-blue";
       break;
   }
 
   return (
     <div className="House-container relative">
-      <div
-        className={`bg-red-200 h-[120px] w-[120px] absolute ${diceboardposition} flex justify-center items-center`}
-      >
+      <div className={`dice-box ${diceboardposition} absolute`}>
         <Dice color={color} />
       </div>
 
-      <div className={`bg-${color}-400 h-[240px] w-[240px] flex justify-center items-center`}>
-        <div className="bg-white h-[160px] w-[160px] flex flex-wrap">
+      <div className={`home-box home-${color}`}>
+        <div className="home-inner-box">
           {[...Array(4)].map((_, index) => (
-            <div key={index} className="circles-container h-20 w-20 flex justify-center items-center">
-              <div className={`bg-${color}-400 h-10 w-10 rounded-4xl`}>
+            <div key={index} className="circle-wrapper">
+              <div className={`circle-base circle-${color}`}>
                 {tokenofHouse.map((t) =>
                   t.id === index && !t.isOutofHome ? (
                     <Token color={color} spiningAni={color} tokenId={index} />

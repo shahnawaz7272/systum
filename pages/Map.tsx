@@ -13,19 +13,19 @@ const Map = () => {
   
   return (
    <section> 
-    <div className="ludo-map-container flex justify-center items-center pt-[60px]">
+    <div className="ludo-map-container flex justify-center items-center pt-[60px] ">
         <div className="map">
-           <div className="upper h-[240px] w-[600px] flex"> 
+           <div className="upper ls:h-[240px] ls:w-[600px] md:w-[450px] md:h-[180px] mp:w-[150px] mp:h-[60px] flex"> 
             <Home color="red"/>
             <Path ori="vertical" color="green"/>
             <Home color="green"/>
             </div>
-            <div className="middle h-[120px] w-[600px] flex flex-wrap">
+            <div className="middle ls:h-[120px] ls:w-[600px] md:w-[450px] md:h-[90px] mp:w-[150px] mp:h-[30px] flex flex-wrap">
             <Path ori="horizontal" color="red"/>
             <Safezone/>
             <Path ori="horizontal" color="yellow"/>
             </div>
-            <div className="upper h-[240px] w-[600px] flex"> 
+            <div className="upper ls:h-[240px] ls:w-[600px] md:w-[450px] md:h-[180px] mp:w-[150px] mp:h-[60px] flex"> 
             <Home color="blue"/>
             <Path ori="vertical" color="blue"/>
             <Home color="yellow"/>

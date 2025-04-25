@@ -26,6 +26,7 @@ type GameStore = {
   hasrolled: boolean;
   tokenTouched: boolean;
   TokenRoute: TokenRouteType;
+  gotkilled:boolean
   sethasRolled: () => void;
   rollDice: () => number;
   nextTurn: () => void;
@@ -42,6 +43,7 @@ export const GameState = create<GameStore>((set, get) => ({
   NumberOnDice: null,
   hasrolled: false,
   tokenTouched: false,
+  gotkilled:false,
 
   TokenRoute: {
     blue: ["b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b13","b10","b7","b4","b1","finishb"],
@@ -54,9 +56,10 @@ export const GameState = create<GameStore>((set, get) => ({
     const colors = ["red", "green", "yellow", "blue"];
     const Tokens = colors.flatMap((color) =>
       Array.from({ length: 4 }).map((_, i) => ({
+        
         id: i,
         color,
-        position: "home",
+        position: `home`,
         isFinished: false,
         isOutofHome: false,
         stepsMoved: 0
@@ -80,10 +83,19 @@ export const GameState = create<GameStore>((set, get) => ({
   },
 
   nextTurn: () => {
+    const { gotkilled  } = get();
     const order: Player[] = ["blue", "red", "green", "yellow"];
     const currentTurn = get().Turn;
-    const next = order[(order.indexOf(currentTurn) + 1) % order.length];
+    if(!gotkilled){
+      const next = order[(order.indexOf(currentTurn) + 1) % order.length];
+    setTimeout(() => {
     set({ Turn: next, hasrolled: false });
+    }, 1500);
+    }else{
+    set({ Turn: currentTurn, hasrolled: false , gotkilled:false });
+
+    }
+    
   },
 
   moveToken: (id, color) => {
@@ -98,7 +110,7 @@ export const GameState = create<GameStore>((set, get) => ({
         token.isOutofHome
       ) {
         const path = TokenRoute[color as Player];
-        const newStepsMoved = token.stepsMoved + NumberOnDice -1;
+        const newStepsMoved = token.stepsMoved + NumberOnDice ;
 
         if (newStepsMoved < 56) {
           const newPosition = path[newStepsMoved];
@@ -121,13 +133,14 @@ export const GameState = create<GameStore>((set, get) => ({
   },
 
   sendTokenHome: (id, color) => {
-    const { Tokens } = get();
+    
+    const { Tokens  } = get();
     const updatedTokens = Tokens.map(t =>
       t.id === id && t.color === color
         ? { ...t, position: "home", isOutofHome: false }
         : t
     );
-    set({ Tokens: updatedTokens });
+    set({ Tokens: updatedTokens ,gotkilled:true});
   },
 
   moveOutFromHome: (id, color) => {
