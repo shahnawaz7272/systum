@@ -20,7 +20,7 @@ const Map = () => {
             <Path ori="vertical" color="green"/>
             <Home color="green"/>
             </div>
-            <div className="middle ls:h-[120px] ls:w-[600px] md:w-[450px] md:h-[90px] mp:w-[150px] mp:h-[30px] flex flex-wrap">
+            <div className="middle ls:h-[120px] ls:w-[600px] md:w-[450px] md:h-[90px] mp:w-[150px] mp:h-[30px] flex ">
             <Path ori="horizontal" color="red"/>
             <Safezone/>
             <Path ori="horizontal" color="yellow"/>
