@@ -216,7 +216,7 @@
   .map {
     height: 450px;
     width: 450px;
-    margin-top: 37px;
+    margin-top: 57px;
     background-color: beige;
   }
   /* HTML: <div class="triangle"></div> */
@@ -344,15 +344,17 @@
         width: 13px;
         position: relative;
         left: 9px;
-        transform: scale(1.3);
+        transform: scale(1.2);
   }
   .token-container-absolute{
     position: absolute;
     height: 26px;
     width: 13px;
     padding-bottom: 7px;
-    top: -17px;
-    left: 3px;
+    top: -19px;
+    left: 9px;
+    transform: scale(1.2);
+
   }
   .token-div{
     width: 13px;
@@ -412,125 +414,201 @@
   body {
     background-image: url("/ChatGPT\ Image\ Apr\ 14\,\ 2025\,\ 10_56_51\ AM.png");
     background-size: cover; /* Makes sure it covers the whole screen */
-    background-position: center; /* Centers the image */
-    background-repeat: no-repeat; /* Prevents tiling */
+    background-position: inherit; /* Centers the image */
+    background-repeat: repeat; /* Prevents tiling */
     height: 100vh; /* Ensures full screen height */
     margin: 0; /* Removes default spacing */
-    cursor: pointer;
+    overflow: hidden;
   }
-
   .map {
     height: 600px;
     width: 600px;
+    margin-top: 60px;
     background-color: beige;
   }
-
+  .upper-map{
+    display: flex;
+    width: 600px;
+    height: 240px;
+  }
+  .middle-map{
+    display: flex;
+    width: 600px;
+    height: 120px;
+  }
+  .lower-map{
+    display: flex;
+    width: 600px;
+    height: 240px;
+  }
   /* HTML: <div class="triangle"></div> */
   .safezone-blue {
     height: 60px;
+    width: 120px;
+    background-color: #60a5fa;
+    position: relative;
+    top: -120px;
     aspect-ratio: 2;
     clip-path: polygon(50% 0, 100% 100%, 0 100%);
   }
 
   .safezone-green {
+    background-color: #34d399;
     height: 60px;
+    width: 120px;
+    position: relative;
+
     aspect-ratio: 2;
     clip-path: polygon(50% 100%, 100% 0, 0 0);
   }
 
   .safezone-red {
+    background-color: #f87171;
     height: 120px;
     width: 60px;
+    position: relative;
+    top: -60px;
     aspect-ratio: 2;
     clip-path: polygon(0 0, 100% 50%, 0 100%);
   }
 
   .safezone-yellow {
+    background-color: #facc15;
     height: 120px;
     width: 60px;
+    position: relative;
+    top: -240px;
+    left:60px;
     clip-path: polygon(100% 0, 0 50%, 100% 100%);
     aspect-ratio: 2;
   }
-
-  /* HTML: <div class="triangle"></div> */
-  .goti-lower {
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 0 11px 37px 11px;
-    border-color: transparent transparent gray transparent;
-    transform: rotate(180deg);
-  }
-  .custom-map-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 60px;
-  }
-
   .custom-upper-row {
-    display: flex;
+    width: 600px;
     height: 240px;
-    width: 600px;
   }
-
   .custom-middle-row {
-    display: flex;
-    flex-wrap: wrap;
-    height: 120px;
     width: 600px;
+    height: 120px;
   }
   .dice-box {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #fecaca;
     height: 120px;
     width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .dice {
+    background-color: white;
+    height: 80px;
+    width: 80px;
+    padding: 0 7px;
+  }
+  .numberonthedice {
+    height: 26px;
+    width: 26px;
+  }
+  .dicedot {
+    height: 13px;
+    width: 13px;
+  }
+  .dicedot5 {
+    width: 47px;
   }
   .dice-red {
-    left: -120px;
+    top: -90px;
+    right: 240px;
   }
 
   .dice-green {
+    top: -90px;
     right: -120px;
   }
 
   .dice-blue {
-    left: -120px;
-    top: 120px;
+    top: 200px;
+    right: 240px;
   }
 
   .dice-yellow {
+    top: 200px;
     right: -120px;
-    top: 120px;
-  }
-  .home-inner-box {
-    background-color: white;
-    display: flex;
-    flex-wrap: wrap;
-    height: 160px;
-    width: 160px;
-  }
-  .home-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 240px;
-    width: 240px;
   }
   .circle-wrapper {
+    height: 80px;
+    width: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80px;
-    width: 80px;
   }
   .circle-base {
-    border-radius: 9999px;
     height: 40px;
     width: 40px;
+    border-radius: 9999px;
+  }
+  .home-box {
+    height: 240px;
+    width: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .home-inner-box {
+    height: 160px;
+    width: 160px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+  }
+  .token-container-relative{
+    top: -23px;
+        height: 26px;
+        width: 13px;
+        position: relative;
+        left: 15px;
+        transform: scale(2.7);
+  }
+  .token-container-absolute{
+    position: absolute;
+    height: 26px;
+    width: 13px;
+    padding-bottom: 7px;
+    top: -19px;
+    left: 9px;
+    transform: scale(2.7);
+
+  }
+  .token-div{
+    width: 13px;
+  }
+  .token-circle-inner{
+    height: 7px !important;
+    width: 7px !important;
+  }
+  .token-circle-outter{
+    height: 12px;
+    width: 12px;
+  }
+  .goti-lower {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 0 5px 20px 5px;
+    border-color: transparent transparent gray transparent;
+    transform: rotate(180deg);
+    position: relative;
+    top: -4px;
+    right: -1px;
+  }
+  .circle-ring{
+    height: 10px;
+    width: 10px;
+    top: 22px;
+  }
+  .token-container-absolute .circle-ring{
+    height: 10px;
+    width: 10px;
+    top: 22px;
   }
   .path-vertical-height {
     height: 240px;
@@ -549,46 +627,8 @@
     width: 40px;
   }
   .safezone-box {
-    position: relative;
     height: 120px;
     width: 120px;
-  }
-  .safezone-blue {
-    background-color: #60a5fa; /* bg-blue-400 */
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: -120px;
-  }
-
-  .safezone-red {
-    background-color: #f87171; /* bg-red-400 */
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    top: -60px;
-  }
-
-  .safezone-green {
-    background-color: #34d399; /* bg-green-400 */
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .safezone-yellow {
-    background-color: #facc15; /* bg-yellow-400 */
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    top: -240px;
-    right: -60px;
   }
 }
 

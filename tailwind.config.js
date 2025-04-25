@@ -14,7 +14,7 @@ module.exports = {
       screens: {
         mp: { min: "360px", max: "768px" }, // Mobile portrait custom
         md: { min: "768px", max: "1023px" }, // Tablet custom
-        ls: { min:"1024px"}
+        ls: { min:"1024px" , max:"9999px"}
       },
     },
   },
