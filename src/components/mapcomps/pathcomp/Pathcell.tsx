@@ -16,13 +16,12 @@ const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
   const Turn = GameState((s) => s.Turn);
   const tokensHere = tokens.filter((t) => t.position === specialid);
   const sendTokenHome = GameState((s) => s.sendTokenHome);
-  const NextTurn = GameState((s) => s.nextTurn);
 
   let colored: number[] = [];
   let starred: number[] = [];
   let arrowed: number[] = [];
   let starColor: string = "";
-  let arrowRotation: number = 0;
+  let arrowRotation: any = 0;
 
   switch (coloredsteps) {
     case "blue":
@@ -81,8 +80,8 @@ const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
       <div
         className={`pathcell-inner ${isColoredCell ? `bg-${coloredsteps}` : ""}`}
       >
-        {isStarCell && <FontAwesomeIcon icon={faStarRegular} style={{ color: starColor }} size="x" />}
-        {isArrowCell && <FontAwesomeIcon icon={faArrowRight} style={{ color: starColor }} size="x" rotation={arrowRotation} />}
+        {isStarCell && <FontAwesomeIcon icon={faStarRegular} style={{ color: starColor }} size="xs" />}
+        {isArrowCell && <FontAwesomeIcon icon={faArrowRight} style={{ color: starColor }} size="xs" rotation={arrowRotation} />}
 
         {tokensHere.map((item) => (
           <Token key={item?.id} color={item?.color} spiningAni={item?.color} tokenId={item?.id} />

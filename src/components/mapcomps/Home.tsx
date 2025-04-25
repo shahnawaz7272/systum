@@ -10,7 +10,7 @@ const Home = ({ color }: color) => {
   const tokens = GameState((s) => s.Tokens);
   const tokenofHouse = tokens.filter((t) => t.color === color);
 
-  let diceboardposition: string;
+  let diceboardposition: any;
 
   switch (color) {
     case "red":

@@ -3,7 +3,7 @@ import { GameState } from "../../store/store";
 type TokenProps = {
   color?: string;
   spiningAni?: string;
-  tokenId?: number;
+  tokenId: number;
 };
 
 const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
@@ -25,7 +25,7 @@ const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
     if (token?.color == color && Turn == color) {
       if (hasRolled) {
         if (token?.position === "home" && NumberOnDice === 6) {
-          moveOutFromHome(tokenId, spiningAni);
+          moveOutFromHome(tokenId, color);
           setHasRolled();
         } else if (token?.isOutofHome) {
           moveToken(tokenId, color);
@@ -52,7 +52,7 @@ const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
     >
       <div className="token-div relative z-10">
         <div className="token-circle-outter bg-[gray] h-[25px] w-[23px] rounded-4xl flex justify-center items-center">
-          <div className={`token-circle-inner h-[18px] w-[18px] rounded-4xl bg-${color}-400 z-[1]`}></div>
+          <div className={`token-circle-inner h-[18px] w-[18px] rounded-4xl bg-${color}-400 token-circle-${color} z-[1]`}></div>
         </div>
         <div className="goti-lower absolute top-[17px]"></div>
       </div>
