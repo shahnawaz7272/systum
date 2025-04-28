@@ -35,6 +35,8 @@ type GameStore = {
   moveOutFromHome: (id: number, color: TokenState["color"]) => void;
   moveToken: (id: number, color: TokenState["color"]) => void;
   sendTokenHome: (id: number, color: TokenState["color"]) => void;
+  restoreState: () => void;
+
 };
 
 export const GameState = create<GameStore>((set, get) => ({
@@ -46,10 +48,10 @@ export const GameState = create<GameStore>((set, get) => ({
   gotkilled:false,
 
   TokenRoute: {
-    blue: ["b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b13","b10","b7","b4","b1","finishb"],
-    red: ["r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r4","r7","r10","r13","r16","finishr"],
-    green: ["g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g4","g7","g10","g13","g16","finishg"],
-    yellow: ["y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y13","y10","y7","y4","y1","finishy"],
+    blue: ["startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b13","b10","b7","b4","b1","finishb"],
+    red: ["startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r4","r7","r10","r13","r16","finishr"],
+    green: ["startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y15","startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g4","g7","g10","g13","g16","finishg"],
+    yellow: ["startyellow","y9","y6","y3","y0","b2","b5","b8","starblue","b14","b17","arrowblue","b15","startblue","b9","b6","b3","b0","r15","r12","r9","starred","r3","r0","arrowred","r2","startred","r8","r11","r14","r17","g15","g12","g9","stargreen","g3","g0","arrowgreen","g2","startgreen","g8","g11","g14","g17","y2","y5","staryellow","y11","y14","y17","arrowyellow","y13","y10","y7","y4","y1","finishy"],
   },
 
   initializeTokens: () => {
@@ -71,6 +73,8 @@ export const GameState = create<GameStore>((set, get) => ({
   rollDice: () => {
     const value = Math.floor(Math.random() * 6) + 1;
     set({ NumberOnDice: value });
+    const StateToBeSaved = {NumberOnDice:value,PositionOfPlayers:get().Tokens,Turn:get().Turn}
+    localStorage.setItem('ludo-game-state', JSON.stringify(StateToBeSaved))
     return value;
   },
 
@@ -90,7 +94,9 @@ export const GameState = create<GameStore>((set, get) => ({
       const next = order[(order.indexOf(currentTurn) + 1) % order.length];
     setTimeout(() => {
     set({ Turn: next, hasrolled: false });
-    }, 1500);
+    const StateToBeSaved = {NumberOnDice:get().NumberOnDice,PositionOfPlayers:get().Tokens,Turn:next}
+    localStorage.setItem('ludo-game-state', JSON.stringify(StateToBeSaved))
+    }, 1200);
     }else{
     set({ Turn: currentTurn, hasrolled: false , gotkilled:false });
 
@@ -115,6 +121,7 @@ export const GameState = create<GameStore>((set, get) => ({
         if (newStepsMoved < 56) {
           const newPosition = path[newStepsMoved];
           return { ...token, stepsMoved: newStepsMoved, position: newPosition };
+
         } else if (newStepsMoved === 56) {
           return {
             ...token,
@@ -130,6 +137,8 @@ export const GameState = create<GameStore>((set, get) => ({
     });
 
     set({ Tokens: updatedTokens });
+    const StateToBeSaved = {NumberOnDice:NumberOnDice,PositionOfPlayers:Tokens ,Turn:Turn}
+    localStorage.setItem('ludo-game-state', JSON.stringify(StateToBeSaved))
   },
 
   sendTokenHome: (id, color) => {
@@ -165,5 +174,18 @@ export const GameState = create<GameStore>((set, get) => ({
     });
 
     set({ Tokens: updatedTokens });
+    const StateToBeSaved = {NumberOnDice:NumberOnDice,PositionOfPlayers:Tokens}
+    localStorage.setItem('ludo-game-state', JSON.stringify(StateToBeSaved))
   },
+  restoreState: () => {
+    const savedState = localStorage.getItem('ludo-game-state');
+    if (savedState) {
+      const parsed = JSON.parse(savedState);
+      set({
+        NumberOnDice: parsed.NumberOnDice ,
+        Tokens: parsed.PositionOfPlayers ,
+        Turn:parsed.Turn || get().Turn
+      });
+    } 
+  }
 }));

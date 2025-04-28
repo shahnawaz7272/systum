@@ -22,7 +22,6 @@ const Dice = ({ color }: color) => {
   const [isRolling, setIsRolling] = useState(false);
 
   if (Turn !== color) return null;
-  console.log(IsAllTokensinHome)
   const diceroll = () => {
     if (hasrolled) return;
     setIsRolling(true);

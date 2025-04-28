@@ -63,9 +63,8 @@ const Pathcell = ({ celltype, coloredsteps, specialid }: CellType) => {
     const enemyTokens = tokensHere.filter((t) => t.color !== Turn);
 
     if (isColoredCell || isStarCell) {
-      console.log(`${specialid} nai marega`);
+      return 
     } else {
-      console.log(`${specialid} maaro saalo ko`);
       if (currentPlayerTokens.length === 1 && enemyTokens.length > 0) {
         enemyTokens.forEach((enemy) => {
           sendTokenHome(enemy.id, enemy.color);
