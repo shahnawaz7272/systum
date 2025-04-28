@@ -67,7 +67,7 @@ export const GameState = create<GameStore>((set, get) => ({
         stepsMoved: 0
       }))
     );
-    set({ Tokens });
+    set({ Tokens , Turn:"blue"});
   },
 
   rollDice: () => {

@@ -4,6 +4,7 @@ import './App.css';
 import { useEffect } from "react";
 import { GameState } from './store/store';
 import Map from '../pages/Map';
+import Restartbtn from './components/Restartbtn';
 
 const App: React.FC = () => {
   const restoreState = GameState((state) => state.restoreState);
@@ -15,6 +16,8 @@ const App: React.FC = () => {
 
   return (
     <div className="app-container">
+      <Restartbtn/>
+
       <Map />
     </div>
   );

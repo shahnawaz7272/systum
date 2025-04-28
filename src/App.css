@@ -11,6 +11,11 @@
     margin: 0; /* Removes default spacing */
     overflow: hidden;
   }
+  .restart-btn{
+    position: relative;
+    right: -330px;
+    top: 10px;
+  }
   .map {
     height: 300px;
     width: 300px;
@@ -217,8 +222,13 @@
   .map {
     height: 450px;
     width: 450px;
-    margin-top: 57px;
+    margin-top: 30px;
     background-color: beige;
+  }
+  .restart-btn{
+    position: relative;
+    right: -680px;
+    top: 15px;
   }
   /* HTML: <div class="triangle"></div> */
   .safezone-blue {
@@ -295,22 +305,22 @@
     width: 23px;
   }
   .dice-red {
-    top: -90px;
+    top: 0px;
     right: 180px;
   }
 
   .dice-green {
-    top: -90px;
+    top: 0px;
     right: -90px;
   }
 
   .dice-blue {
-    top: 180px;
+    top: 90px;
     right: 180px;
   }
 
   .dice-yellow {
-    top: 180px;
+    top: 90px;
     right: -90px;
   }
   .circle-wrapper {
@@ -429,6 +439,11 @@
     height: 600px;
     width: 600px;
     background-color: beige;
+  }
+  .restart-btn{
+    position: relative;
+    right: -750px;
+    top: 0px;
   }
   .upper-map {
     display: flex;
