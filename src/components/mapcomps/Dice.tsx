@@ -13,11 +13,15 @@ const Dice = ({ color }: color) => {
   const sethasrolled = GameState((state) => state.sethasRolled);
   const hasrolled = GameState((state) => state.hasrolled);
   const Tokens = GameState((state) => state.Tokens);
+  const moveToken = GameState((state) => state.moveToken);
+
 
   const TokensOfThisColor = Tokens.filter((t) => t.color === Turn);
   const IsAllTokensinHome = TokensOfThisColor.filter(
     (t) => t.position.includes(`home`) || t.position.includes(`finish${Turn.charAt(0)}`)
   );
+  const Autotoken = TokensOfThisColor.filter((t)=> t.isOutofHome==true && t.isFinished==false)
+
 
   const [isRolling, setIsRolling] = useState(false);
 
@@ -36,7 +40,14 @@ const Dice = ({ color }: color) => {
         setTimeout(() => {
           setIsRolling(false);
         }, 1000);
-      } else {
+      }else if(Autotoken.length==1 && IsAllTokensinHome.length ==3){
+          Autotoken.map((t)=> moveToken(t.id , t.color))
+          nextTurn();
+          setTimeout(() => {
+            setIsRolling(false);
+          }, 1000);
+      }
+       else {
         sethasrolled();
         setTimeout(() => setIsRolling(false), 1000);
       }

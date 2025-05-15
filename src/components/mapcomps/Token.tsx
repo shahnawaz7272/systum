@@ -7,6 +7,7 @@ type TokenProps = {
 };
 
 const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
+  // Zustand store selectors
   const Turn = GameState((state) => state.Turn);
   const nextTurn = GameState((state) => state.nextTurn);
   const setHasRolled = GameState((state) => state.sethasRolled);
@@ -15,40 +16,58 @@ const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
   const tokens = GameState((state) => state.Tokens);
   const moveOutFromHome = GameState((state) => state.moveOutFromHome);
   const moveToken = GameState((state) => state.moveToken);
+  const istokenmoved = GameState((state) => state.istokenmoved);
+  const setistokenmoved = GameState((state) => state.setistokenmoved);
 
+  // Find the token object
   const token = tokens.find((t) => t.id === tokenId && t.color === color);
   const tokenPosition = token?.position;
   const shouldSpin = spiningAni === Turn;
-  const FinishingClass = tokenPosition?.includes("finish");
+  const isInFinishZone = tokenPosition?.includes("finish");
+
+  const bgClass = token?.color === "blue" || token?.color === "green" ? "token-finished-container-grn-blu" : "token-finished-container";
 
   const tokenHandler = () => {
-    if (token?.color == color && Turn == color) {
-      if (hasRolled) {
-        if (token?.position === "home" && NumberOnDice === 6) {
-          moveOutFromHome(tokenId, color);
-          setHasRolled();
-        } else if (token?.isOutofHome) {
-          moveToken(tokenId, color);
-          if(NumberOnDice==6){
-            setHasRolled()
-          }else{
-          setTimeout(() => {
-            nextTurn();
-          }, 2000);}
-          
-        } else {
-          setHasRolled();
-        }
+    if (!token || !color || Turn !== color || istokenmoved) return;
+
+    if (!hasRolled) return;
+
+    if (token.position === "home") {
+      if (NumberOnDice === 6) {
+        // Move token out of home
+        moveOutFromHome(tokenId, color);
       }
+
+      // Reset dice state whether moved or not
+      setHasRolled();
+      return;
     }
+
+    if (token.isOutofHome) {
+      // Move token forward on the path
+      moveToken(tokenId, color);
+      // Prevent multiple clicks in same turn
+      setistokenmoved(true);
+      if (NumberOnDice === 6) {
+        // Allow another roll
+        setHasRolled();
+      } else {
+        // Delay before switching turn
+        setTimeout(() => nextTurn(), 2000);
+      }
+      return;
+    }
+
+    // If token is neither at home nor out, just reset roll
+    setHasRolled();
   };
 
   return (
     <div
       onClick={tokenHandler}
-      className={`token-container ${tokenPosition == "home" ? "relative token-container-relative" : "absolute token-container-absolute"} 
-        ${tokenPosition === "start" ? "top-[73px] left-[110px]" : "-top-[30px] left-2"} 
-        h-[62px] w-[26px] ${FinishingClass ? "static scale-[0.6]" : "absolute"}  md:scale-[0.7] mp:scale-[0.4]`}
+      className={`token-container ${tokenPosition === "home" ? "relative token-container-relative" : "absolute token-container-absolute"} 
+      ${tokenPosition === "start" ? "top-[73px] left-[110px]" : "-top-[30px] left-2"} 
+      h-[62px] w-[26px] ${isInFinishZone ? `static scale-[0.6] ${bgClass}` : "absolute"} md:scale-[0.7] mp:scale-[0.4]`}
     >
       <div className="token-div relative z-10">
         <div className="token-circle-outter bg-[gray] h-[25px] w-[23px] rounded-4xl flex justify-center items-center">
@@ -56,10 +75,9 @@ const Token = ({ color, spiningAni, tokenId }: TokenProps) => {
         </div>
         <div className="goti-lower absolute top-[17px]"></div>
       </div>
-      <div
-        className={`circle-ring h-6 w-6 border-black border-[0.5px] rounded-4xl absolute top-[38px] 
-        ${shouldSpin ? "animate-ping" : ""}`}
-      ></div>
+
+      {/* Ring animation when it's this player's turn */}
+      <div className={`circle-ring h-6 w-6 border-black border-[0.5px] rounded-4xl absolute top-[38px] ${shouldSpin ? "animate-ping" : ""}`}></div>
     </div>
   );
 };
